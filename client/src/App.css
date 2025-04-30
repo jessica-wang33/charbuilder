@@ -1,0 +1,70 @@
+html, body, #root {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+
+/** Profiles **/
+.toggle{
+  width: 35%;
+  background-color: blue;
+}
+.toggle > div{
+  width: 50%;
+}
+.character-main{
+  height: 100vh;
+}
+.history{
+  height: 30%;
+}
+.others{
+  height: 70%;
+}
+
+/** Character Page **/
+.masonry-grid{
+  column-count: 3;
+  gap: 0.25rem;
+}
+.masonry-grid > figure{
+  margin: 0.25rem;
+	display: block;
+	break-inside: avoid;
+	position: relative;
+}
+.masonry-grid > figure > img{
+  width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+.history--card{
+  margin: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  width: max(30vw, 300px);
+  min-height: 150px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  display: inline-block;
+  vertical-align: top;
+}
+
+/** History **/
+.history--card:hover {
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.history--card > .heading {
+  border-bottom: 1px solid #e0e0e0;
+  border-radius: 10px 10px 0 0;
+  padding: 10px 15px;
+  background-color: #f0f8ff;
+  text-align: center;
+  font-weight: 600;
+  min-height: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}

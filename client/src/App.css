@@ -4,6 +4,24 @@ html, body, #root {
   padding: 0;
   overflow: hidden;
 }
+.submit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #4CAF50;  /* Green */
+  color: white;
+  width: 50%;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #45a049;
+}
 
 
 /** Profiles **/
@@ -41,7 +59,12 @@ html, body, #root {
   vertical-align: middle;
 }
 
+/** History **/
 .history--card{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   margin: 10px;
   border: 1px solid #e0e0e0;
   border-radius: 10px;
@@ -52,13 +75,12 @@ html, body, #root {
   display: inline-block;
   vertical-align: top;
 }
-
-/** History **/
 .history--card:hover {
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
 .history--card > .heading {
+  width: 100%;
   border-bottom: 1px solid #e0e0e0;
   border-radius: 10px 10px 0 0;
   padding: 10px 15px;
@@ -67,4 +89,33 @@ html, body, #root {
   font-weight: 600;
   min-height: 30px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.add-heading{
+  background-color: #59A2E2 !important;
+}
+
+#add-history-card{
+  position: absolute;
+  left: 75%;
+  top: 75%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.add-card-wrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 75%;
+  top: 75%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.add-card-wrapper > form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }

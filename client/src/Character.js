@@ -3,8 +3,6 @@ import History from "./History.js";
 import Moodboard from "./Moodboard.js";
 
 export default function Character({ name, img, items, history }){
-    console.log("Name: %s", name)
-    console.log(items)
     /*const items = [
         {'src': 'https://img.freepik.com/free-vector/hand-painted-watercolor-pastel-sky-background_52683-60691.jpg'},
         {'src': 'https://img.cdn-pictorem.com/uploads/collection/A/AJ2EJC6RIT/900_Salmanaz_nature_anime_aesthetic_landscape.jpg'},
@@ -40,7 +38,7 @@ export default function Character({ name, img, items, history }){
     )*/
    return (
         <>
-          <History />  
+          <History history={history}/>  
         </>
    )
 }

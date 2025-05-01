@@ -1,21 +1,49 @@
 import React from "react";
 import HistoryCard from "./HistoryCard";
 
-export default function History(){
-    const [cards, setCards] = React.useState([
-        {id: 1, heading: "Card 1", content: "Rosette and Dominick start adventuring around the city, but Aliza finds her again and invites her to a party at the royal place (at this point, Rosette has gotten some exposure to the Ruler and his Religion)"},
-        {id: 2, heading: "Card 2", content: "Rosette also finds a map in the haunt that has key battle spots in the War (THIS WILL END UP BEING USEFUL, this is where all the spirits have ended up going)"},
-        {id: 3, heading: "Card 3", content: "As one of her tasks, she tries to track down the Syndicate and ends up going to one of the other places on the map, feels similar reverberation and ends up talking to a ghost LOL"},
-        {id: 3, heading: "Card 3", content: "As one of her tasks, she tries to track down the Syndicate and ends up going to one of the other places on the map, feels similar reverberation and ends up talking to a ghost LOL"},
-        {id: 3, heading: "Card 3", content: "As one of her tasks, she tries to track down the Syndicate and ends up going to one of the other places on the map, feels similar reverberation and ends up talking to a ghost LOL"},
-        {id: 3, heading: "Card 3", content: "As one of her tasks, she tries to track down the Syndicate and ends up going to one of the other places on the map, feels similar reverberation and ends up talking to a ghost LOL"}
-    ]);
+export default function History({history}){
+    const [addingCard, setAddingCard] = React.useState(false);
+    const [cardForm, setCardForm] = React.useState({});
 
+    const [cards, setCards] = React.useState(history)
+
+    function addCard(formData) {
+        const heading = formData.get('heading')
+        const content = formData.get('content')
+        console.log(heading)
+        console.log(content)
+
+        setCards(prev => [...prev, {heading: heading, content: content}])
+        setAddingCard(prev => false)
+    }
     return (
         <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
             {cards.map((card) => (
                 <HistoryCard heading={card.heading} content={card.content} />
             ))}
+            {addingCard? 
+                <div className="add-card-wrapper">
+                    <form action={addCard}>
+                        <div className="history--card mb-0">
+                                <div className="heading add-heading">
+                                    <input type="text" id="heading" name="heading" placeholder="Heading" value={cardForm.heading} />
+                                </div>
+                                <textarea id="content" name="content" rows="4" cols="50">
+                                    {cardForm.content}
+                                </textarea>
+                        </div>
+                        <button type="submit" className="submit-btn mt-0">Submit</button>
+                    </form>
+                </div>
+                :
+                <div id="add-history-card" className="history--card" onClick = {() => setAddingCard(prev => true)}>
+                    <div className="heading add-heading">Add Card</div>
+                    <img
+                        src={"https://cdn-icons-png.flaticon.com/512/8212/8212741.png"}
+                        style={{ width: '100px', height: '100px' }}
+                    />
+                </div>
+            }
         </div>
     )
 }

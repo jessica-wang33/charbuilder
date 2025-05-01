@@ -20,7 +20,7 @@ function App(){
     ).then(
       console.log(characters)
     )
-  }, [characters])
+  }, [])
 
   var profileStyle = {'background-color' : profilesMode? 'blue' : 'red'};
   var mapStyle = {'background-color' : profilesMode? 'red' : 'blue'};

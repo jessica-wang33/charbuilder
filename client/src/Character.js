@@ -2,7 +2,19 @@ import React from "react"
 import History from "./History.js";
 import Moodboard from "./Moodboard.js";
 
-export default function Character({ name, img, items, history }){
+export default function Character({ name, img, items }){
+
+    const [history, setHistory] = React.useState([])
+    React.useEffect(() => {
+        fetch(`/get_history?name=${name}`).then(
+            res => res.json()
+          ).then(
+            data => {
+                console.log("Fetched data:", data);
+                setHistory(data)
+            })
+    }, [])
+
     /*const items = [
         {'src': 'https://img.freepik.com/free-vector/hand-painted-watercolor-pastel-sky-background_52683-60691.jpg'},
         {'src': 'https://img.cdn-pictorem.com/uploads/collection/A/AJ2EJC6RIT/900_Salmanaz_nature_anime_aesthetic_landscape.jpg'},
@@ -38,7 +50,7 @@ export default function Character({ name, img, items, history }){
     )*/
    return (
         <>
-          <History history={history}/>  
+          <History history={history} name={name}/>  
         </>
    )
 }

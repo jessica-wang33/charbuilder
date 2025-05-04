@@ -1,6 +1,42 @@
 const express = require('express')
 const app = express()
 
+const mysql = require('mysql2');
+
+// Create connection
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'wearethestories',
+    database: 'charbuilder'
+});
+
+// Connect to DB
+db.connect(err => {
+    if (err) {
+        console.error('Error connecting to MySQL:', err);
+        return;
+    }
+    console.log('Connected to MySQL database.');
+});
+
+app.get("/get_history", (req, res) => {
+    const name = req.query['name']
+    db.query("SELECT * FROM history WHERE name=?", [name], (err, results) => {
+        res.json(results)
+    })
+})
+
+app.post("/add_cards", express.text(), (req, res) => {
+    console.log(req)
+    const {cards, name} = JSON.parse(req.body)
+    console.log(cards, name)
+    const params = cards.map(card => [card.heading, card.content, name])
+    db.query("INSERT INTO history VALUES ?", [params], (err, results) => {
+        console.log(results)
+    })
+})
+
 app.get("/api", (req, res) => {
     items1 = [
         {'src': 'https://img.freepik.com/free-vector/hand-painted-watercolor-pastel-sky-background_52683-60691.jpg'},

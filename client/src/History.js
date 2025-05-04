@@ -1,11 +1,30 @@
 import React from "react";
 import HistoryCard from "./HistoryCard";
 
-export default function History({history}){
+export default function History({history, name}){
     const [addingCard, setAddingCard] = React.useState(false);
     const [cardForm, setCardForm] = React.useState({});
 
     const [cards, setCards] = React.useState(history)
+    const [newCards, setNewCards] = React.useState([])
+    const newCardsRef = React.useRef([])
+
+    React.useEffect(() => {
+        setCards(prev => history)
+    }, [history])
+    React.useEffect(() => {
+        newCardsRef.current = newCards
+    }, [newCards])
+
+    React.useEffect(() => {
+        const saveCards = () => {
+            if(newCardsRef.current.length > 0){
+                navigator.sendBeacon("/add_cards", JSON.stringify({cards: newCardsRef.current, name: name}))
+            }
+        }
+        window.addEventListener("pagehide", saveCards)
+        return () => window.removeEventListener("pagehide", saveCards)
+    }, [])
 
     function addCard(formData) {
         const heading = formData.get('heading')
@@ -14,6 +33,7 @@ export default function History({history}){
         console.log(content)
 
         setCards(prev => [...prev, {heading: heading, content: content}])
+        setNewCards(prev => [...prev, {heading: heading, content: content}])
         setAddingCard(prev => false)
     }
     return (

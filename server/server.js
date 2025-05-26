@@ -28,11 +28,43 @@ app.get("/get_history", (req, res) => {
 })
 
 app.post("/add_cards", express.text(), (req, res) => {
-    console.log(req)
-    const {cards, name} = JSON.parse(req.body)
-    console.log(cards, name)
-    const params = cards.map(card => [card.heading, card.content, name])
-    db.query("INSERT INTO history VALUES ?", [params], (err, results) => {
+    const {cards, name, positions} = JSON.parse(req.body)
+    console.log(positions)
+    // OLD APPROACH:
+    /*const params1 = cards.map(card => {
+        let idx = card.id 
+        let pos = positions[idx].split()
+        let x = parseInt(pos[0])
+        let y = parseInt(pos[1])
+        console.log(x, y)
+        return [card.heading, card.content, name, null, null, idx]
+    })*/
+
+    // Insert all the newly created cards ** WITHOUT POSITIONS **
+    const params1 = cards.map(card => [card.heading, card.content, name, null, null, card.id])
+    console.log("Params1:")
+    console.log(params1)
+    db.query("INSERT INTO history VALUES ?", [params1], (err, results) => {
+        console.log(err)
+        console.log(results)
+    })
+    // Insert all the updated positions of all cards
+    const idxs = Object.keys(positions)
+    const ids = idxs.join(', ')
+    const xs = idxs.map(idx => {
+        let val = parseInt(positions[idx].split(" ")[0])
+        return `WHEN ${idx} THEN ${val}`
+    }).join(' ')
+    const ys = idxs.map(idx => {
+        console.log("Positions:")
+        console.log(positions[idx])
+        console.log(positions[idx].split(" "))
+        let val = parseInt(positions[idx].split(" ")[1])
+        return `WHEN ${idx} THEN ${val}`
+    }).join(' ')
+    const query2 = `UPDATE history SET x = CASE id ${xs} END, y = CASE id ${ys} END WHERE id IN (${ids})`
+    console.log(query2)
+    db.query(query2, [], (err, results) => {
         console.log(results)
     })
 })

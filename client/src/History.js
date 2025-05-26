@@ -6,21 +6,34 @@ export default function History({history, name}){
     const [cardForm, setCardForm] = React.useState({});
 
     const [cards, setCards] = React.useState(history)
-    const [newCards, setNewCards] = React.useState([])
+    const [newId, setNewId] = React.useState(0);
+    const [newCards, setNewCards] = React.useState([]) // New cards that were added
+
     const newCardsRef = React.useRef([])
+    const newPositionsRef = React.useRef({})
+
+    const [newPositions, setNewPositions] = React.useState({}) // ANY time a position changes
 
     React.useEffect(() => {
         setCards(prev => history)
+        if(history.length > 0){
+            setNewId(prev => history[history.length - 1].id + 1)
+        }
     }, [history])
     React.useEffect(() => {
         newCardsRef.current = newCards
     }, [newCards])
+    React.useEffect(() => {
+        newPositionsRef.current = newPositions
+    }, [newPositions])
 
     React.useEffect(() => {
         const saveCards = () => {
-            if(newCardsRef.current.length > 0){
-                navigator.sendBeacon("/add_cards", JSON.stringify({cards: newCardsRef.current, name: name}))
-            }
+            //(newCardsRef.current.length > 0 || newPositionsRef.current.length > 0){
+                navigator.sendBeacon("/add_cards", JSON.stringify(
+                    {cards: newCardsRef.current, name: name, positions: newPositionsRef.current}
+                ))
+            //}
         }
         window.addEventListener("pagehide", saveCards)
         return () => window.removeEventListener("pagehide", saveCards)
@@ -29,17 +42,28 @@ export default function History({history, name}){
     function addCard(formData) {
         const heading = formData.get('heading')
         const content = formData.get('content')
-        console.log(heading)
-        console.log(content)
 
-        setCards(prev => [...prev, {heading: heading, content: content}])
-        setNewCards(prev => [...prev, {heading: heading, content: content}])
+        console.log("New Id atp:")
+        console.log(newId)
+        console.log(history.length)
+        console.log(history)
+        setCards(prev => [...prev, {id: newId, heading: heading, content: content}])
+        setNewCards(prev => [...prev, {id: newId, heading: heading, content: content}])
+        setNewId(prevId => prevId + 1)
         setAddingCard(prev => false)
     }
+
+    function handleDrag(id, x, y) {
+        console.log("Calling handle drag")
+        setNewPositions(prev => ({...prev, [id]: x + " " + y}))
+        console.log(newPositions)
+    }
+
     return (
         <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
             {cards.map((card) => (
-                <HistoryCard heading={card.heading} content={card.content} />
+                //<HistoryCard id={card.id} heading={card.heading} content={card.content} onDragHandler = {handleDrag} />
+                <HistoryCard {...card} onDragHandler = {handleDrag} />
             ))}
             {addingCard? 
                 <div className="add-card-wrapper">

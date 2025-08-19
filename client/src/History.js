@@ -42,11 +42,7 @@ export default function History({history, name}){
     function addCard(formData) {
         const heading = formData.get('heading')
         const content = formData.get('content')
-
-        console.log("New Id atp:")
-        console.log(newId)
-        console.log(history.length)
-        console.log(history)
+        
         setCards(prev => [...prev, {id: newId, heading: heading, content: content}])
         setNewCards(prev => [...prev, {id: newId, heading: heading, content: content}])
         setNewId(prevId => prevId + 1)
@@ -54,15 +50,12 @@ export default function History({history, name}){
     }
 
     function handleDrag(id, x, y) {
-        console.log("Calling handle drag")
         setNewPositions(prev => ({...prev, [id]: x + " " + y}))
-        console.log(newPositions)
     }
 
     return (
         <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
             {cards.map((card) => (
-                //<HistoryCard id={card.id} heading={card.heading} content={card.content} onDragHandler = {handleDrag} />
                 <HistoryCard {...card} onDragHandler = {handleDrag} />
             ))}
             {addingCard? 
